@@ -40,7 +40,7 @@ public class Producteur extends Acteur implements _Producteur {
 
 	public void run()
 	{
-		while(nbMsgProduit < nbMessage)//la garde
+		while(nbMsgProduit < nbMessage)
 		{
 			try {
 				Message msg = new MessageX(identification(),nbMsgProduit, false);
@@ -56,12 +56,12 @@ public class Producteur extends Acteur implements _Producteur {
 			}
 		}
 		//code qui tue les consommateurs
-		if(TestProdCons.producteurAlive == 0)
+		if(TestProdCons.producteurRestant == 0)
 		{
 			if(affichage == 1){
-				System.out.println("Je suis le dernier prod, je tue tous le monde : id "+ this.identification());
+				System.out.println("Je suis le dernier producteur donc je tue tout le monde : id "+ this.identification());
 			}
-			while(TestProdCons.consommateurAlive > 0)
+			while(TestProdCons.consommateurRestant > 0)
 			{
 				try {
 					Message pill = new MessageX(identification(),nbMsgProduit, true);
@@ -76,7 +76,7 @@ public class Producteur extends Acteur implements _Producteur {
 
 					e.printStackTrace();
 				}
-				TestProdCons.consommateurAlive--;
+				TestProdCons.consommateurRestant--;
 			}
 		}
 

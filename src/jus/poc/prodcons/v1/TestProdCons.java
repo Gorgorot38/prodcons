@@ -16,8 +16,8 @@ import jus.poc.prodcons._Producteur;
 
 public class TestProdCons extends Simulateur {
 
-	public static int producteurAlive;
-	public static int consommateurAlive;
+	public static int producteurRestant;
+	public static int consommateurRestant;
 	public int nbProd;
 	public int nbCons;
 	public int nbBuffer;
@@ -41,11 +41,11 @@ public class TestProdCons extends Simulateur {
 	@Override
 	protected void run() throws Exception {
 		this.init("src/jus/poc/prodcons/options/options1A.xml");
-		producteurAlive = nbProd;
-		consommateurAlive = nbCons;
+		producteurRestant = nbProd;
+		consommateurRestant = nbCons;
 		Tampon t = new ProdCons(nbBuffer, affichage);
 		int i=0;
-		Aleatoire aleaCons = new TirageAlea(tempsMoyenConsommation,deviationTempsMoyenConsommation);
+		Aleatoire aleaTempsCons = new TirageAlea(tempsMoyenConsommation,deviationTempsMoyenConsommation);
 		Aleatoire aleaTempsProd = new TirageAlea(tempsMoyenProduction, deviationTempsMoyenProduction);
 		Aleatoire aleaNbreAProduire = new TirageAlea(nombreMoyenDeProduction, deviationNombreMoyenDeProduction);
 
@@ -53,7 +53,7 @@ public class TestProdCons extends Simulateur {
 
 		for(i=0;i<nbCons;i++)
 		{
-			Consommateur c = new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, t, aleaCons, affichage);
+			Consommateur c = new Consommateur(observateur, tempsMoyenConsommation, deviationTempsMoyenConsommation, t, aleaTempsCons, affichage);
 			consommateurs.put(c.identification(), c);
 			c.start();
 			if(affichage == 1){

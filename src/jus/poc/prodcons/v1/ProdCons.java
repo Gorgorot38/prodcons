@@ -28,7 +28,7 @@ public class ProdCons implements Tampon {
 
 	@Override
 	public synchronized Message get(_Consommateur arg0) throws Exception,InterruptedException {
-		while(isVide())//tant que le buffer est vide, on attend
+		while(estVide())//tant que le buffer est vide, on attend
 		{
 			wait();
 		}
@@ -38,22 +38,22 @@ public class ProdCons implements Tampon {
 		if(this.affichage == 1){
 			System.out.println("\tRecuperation IDCons "+arg0.identification()+" : "+m);
 		}
-		//System.out.println(cpt);
 		notifyAll();
 		return m;
 	}
 
 	@Override
 	public synchronized void put(_Producteur arg0, Message arg1) throws Exception,	InterruptedException {
-		//System.out.println(isPlein());
-		while(isPlein())//tant que le buffer est plein, on attend
+		while(estPlein())//tant que le buffer est plein, on attend
 		{
 			wait();
 		}
 		if(!(((Producteur)arg0).check())){
-			TestProdCons.producteurAlive--;
+			if(TestProdCons.producteurRestant > 0){
+				TestProdCons.producteurRestant--;
+			}
 			if(affichage == 1){
-				System.out.println("producteurAlive : "+TestProdCons.producteurAlive);
+				System.out.println("producteurRestant : "+TestProdCons.producteurRestant);
 			}
 		}
 
@@ -61,9 +61,8 @@ public class ProdCons implements Tampon {
 		fin = (fin + 1) % taille();
 		cpt++;
 		if(affichage == 1){
-			System.out.println("\tDepot "+arg1);
+			System.out.println("\tEcriture "+arg1);
 		}
-		//System.out.println(cpt);
 		notifyAll();
 	}
 
@@ -79,7 +78,7 @@ public class ProdCons implements Tampon {
 	 * Renvoie vrai si le buffer est plein
 	 * @return cpt == taille()
 	 */
-	private boolean isPlein()
+	private boolean estPlein()
 	{
 		return cpt == taille();
 	}
@@ -87,7 +86,7 @@ public class ProdCons implements Tampon {
 	 * Renvoie vrai si le buffer est vide
 	 * @return cpt == 0
 	 */
-	private boolean isVide()
+	private boolean estVide()
 	{
 		return cpt == 0;
 	}

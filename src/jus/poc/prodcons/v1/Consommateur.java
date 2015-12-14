@@ -10,7 +10,7 @@ import jus.poc.prodcons._Consommateur;
 
 public class Consommateur extends Acteur implements _Consommateur {
 
-	private int nbMsgProduit;
+	private int nbMsgConsomme;
 	private Tampon tampon;
 	private Aleatoire alea;
 	private int affichage;
@@ -20,14 +20,14 @@ public class Consommateur extends Acteur implements _Consommateur {
 		super(Acteur.typeConsommateur, observateur, moyenneTempsDeTraitement, deviationTempsDeTraitement);
 		this.alea = alea;
 		this.tampon = tampon;
-		nbMsgProduit = 0;
+		nbMsgConsomme = 0;
 		this.affichage = affichage;
 	}
 	/**
-	 * retourne le nbre de message traites
+	 * retourne le nombre de messages consommés
 	 */
 	public int nombreDeMessages() {
-		return nbMsgProduit;
+		return nbMsgConsomme;
 	}
 
 
@@ -41,11 +41,11 @@ public class Consommateur extends Acteur implements _Consommateur {
 					System.out.println("\t\tLecture IDCons "+identification() + " : "+msg);
 				}
 				//code pour quitter la boucle
-				if(msg.toString().contains("poisonPill true"))
+				if(msg.toString().contains("pilule :true"))
 				{
 					break;
 				}
-				nbMsgProduit++;
+				nbMsgConsomme++;
 				int wait = 10*alea.next();
 				sleep(wait);
 			} catch ( Exception e) {
@@ -53,7 +53,7 @@ public class Consommateur extends Acteur implements _Consommateur {
 			}//
 		}
 		if(affichage == 1){
-			System.out.println("Stop : consommateur : " + identification() + " ayant consomme " + nbMsgProduit + " messages");
+			System.out.println("Stop : consommateur : " + identification() + " ayant consomme " + nbMsgConsomme + " messages");
 		}
 	}
 
